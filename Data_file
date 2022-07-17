@@ -1,0 +1,62 @@
+import random
+import praw
+import pandas as pd
+from sklearn.tree import DecisionTreeClassifier
+from openpyxl import Workbook, load_workbook
+
+reddit = praw.Reddit(client_id = '',
+                     client_secret = '',
+                     user_agent = '')
+
+workbook = Workbook()
+worksheet = workbook.active
+random_subreddit = ['ask','AskHistorians','NoStupidQuestions','AskScienceFiction','AskReddit','AskRedditAfterDark','Question','questions']
+worksheet.append(['question','points','answers'])
+dictionary = [['None',0,0]]
+# add to dictionary
+ii = 0
+line = []
+for row in worksheet:
+    for cell in row:
+        if cell.value == 'question' or cell.value == 'points' or cell.value == 'answers':
+            pass
+        else:
+            line.append(cell.value)
+    if len(line) > 0:
+        dictionary.append(line)
+        line = []
+# ----------------------------
+check = 0
+# prediction
+total_points = []
+total_comments = []
+for i in range(10):
+    subreddit = reddit.subreddit(random.choice(random_subreddit))
+    for post in subreddit.hot(limit = 10):
+        for value in dictionary:
+            if value[0] == post.title and value[1] == post.score:
+                check = 0
+            else:
+                check = 1
+        if check == 1:
+            answers = 0
+            for comment in post.comments:
+                if hasattr(comment,"body"):
+                    answers += 1
+            worksheet.append([str(post.title),int(post.score),int(answers)])
+            total_points.append(post.score)
+            total_comments.append(answers)
+            dictionary.append([str(post.title),int(post.score),int(answers)])
+
+    workbook.save(r"C:\Users\danie\Desktop\New Microsoft Excel Worksheet.xlsx")
+    print("save")
+print("done")
+
+# prediction
+data = pd.read_excel(r"C:\Users\danie\Desktop\New Microsoft Excel Worksheet.xlsx")
+x = data.drop(columns = ['question'])
+y = data['question']
+model = DecisionTreeClassifier()
+model.fit(x,y)
+prediction = model.predict([ [round(sum(total_points) / len(total_points)),round(sum(total_comments) / len(total_comments))] ])
+print(prediction,'points {} answers {}'.format(round(sum(total_points) / len(total_points)),round(sum(total_comments) / len(total_comments))))
