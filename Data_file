@@ -1,17 +1,21 @@
+# imports
 import random
 import praw
 import pandas as pd
 from sklearn.tree import DecisionTreeClassifier
 from openpyxl import Workbook, load_workbook
 
+# add your own reddit information
 reddit = praw.Reddit(client_id = '',
                      client_secret = '',
                      user_agent = '')
-
+# activating the workbook
 workbook = Workbook()
 worksheet = workbook.active
+# subreddits that the code finds data for 
 random_subreddit = ['ask','AskHistorians','NoStupidQuestions','AskScienceFiction','AskReddit','AskRedditAfterDark','Question','questions']
 worksheet.append(['question','points','answers'])
+# checks if it already found the data
 dictionary = [['None',0,0]]
 # add to dictionary
 ii = 0
@@ -32,7 +36,9 @@ total_points = []
 total_comments = []
 for i in range(10):
     subreddit = reddit.subreddit(random.choice(random_subreddit))
+    # for each post in the subreddit
     for post in subreddit.hot(limit = 10):
+        # adds to dictionary
         for value in dictionary:
             if value[0] == post.title and value[1] == post.score:
                 check = 0
@@ -43,11 +49,12 @@ for i in range(10):
             for comment in post.comments:
                 if hasattr(comment,"body"):
                     answers += 1
+            # adds information about the data
             worksheet.append([str(post.title),int(post.score),int(answers)])
             total_points.append(post.score)
             total_comments.append(answers)
             dictionary.append([str(post.title),int(post.score),int(answers)])
-
+    # saves the data
     workbook.save(r"C:\Users\danie\Desktop\New Microsoft Excel Worksheet.xlsx")
     print("save")
 print("done")
