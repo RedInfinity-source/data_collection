@@ -1,4 +1,4 @@
-# data_collection
+# RedditDataAnalyzer
 
 This project uses Python and libraries like praw, pandas, sklearn, and openpyxl to analyze data from Reddit subreddits. It retrieves top posts, scores, and comments, and stores it in an Excel spreadsheet. A decision tree classifier from sklearn predicts post titles based on score and comments, demonstrating Python's ability to analyze social media data and understand post popularity and user engagement.
 
