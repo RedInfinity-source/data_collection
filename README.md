@@ -7,7 +7,7 @@ This project uses Python and libraries like praw, pandas, sklearn, and openpyxl 
 - [About](#about)
 - [Features](#features)
 - [Imports](#Imports)
-- [Rating: 7/10](#Rating)
+- [Rating: 5/10](#Rating)
 
 # About
 
@@ -23,4 +23,6 @@ random, Praw, panda, Sklearn.tree, openpyxl
 
 # Rating
 
-The project successfully collects and analyzes data from Reddit using Python, but there's room for improvement in providing detailed documentation, optimizing the code for efficiency and readability, and exploring additional machine learning algorithms for more accurate predictions. Overall, a solid effort.
+The code retrieves data from Reddit using PRAW, stores it in an Excel workbook, and performs a prediction using a Decision Tree classifier. It is modular, divided into sections for data retrieval, storage, and prediction. The code is suitable for fetching subreddit data using the Reddit API. However, there are several issues with the code, including incomplete Reddit information, hardcoded file paths, redundant data checking, repetitive saving, lack of error handling, and inefficient data representation.
+To improve the code, users should provide clear instructions for Reddit API credentials, make file path handling configurable or use relative paths to ensure compatibility across different systems. Efficient data checking could be achieved by using a more efficient data structure or pandas DataFrame instead of iterating through each cell. Saving frequency should be optimized by saving the workbook only once after all data has been fetched from Reddit. Error handling should be implemented to handle potential exceptions gracefully and provide informative error messages to the user.\
+Data storage optimization could involve exploring alternative options like SQLite databases or CSV files for better performance and scalability. Documentation and comments should be added to explain the purpose of each section of the code, making it easier for others to understand and modify. Overall, the code's shortcomings make it difficult for others to understand and modify.
